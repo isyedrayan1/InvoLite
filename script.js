@@ -546,7 +546,7 @@ const themeToggle = document.getElementById("theme-toggle");
         .toString()
         .padStart(3, "0")}`;
     invoiceNumberInput.value = invoiceNumber;
-    // Update the saved state with the new invoice number
+    
     saveState();
     previewSaveSpinner.style.display = "none";
     previewSaveBtn.classList.add("animate__animated", "animate__bounceIn");
@@ -574,7 +574,6 @@ const themeToggle = document.getElementById("theme-toggle");
     const element = document.getElementById("preview-content");
     // Apply PDF rendering class to ensure proper styling
     element.classList.add("pdf-rendering");
-    // Force reflow to ensure content is rendered
     element.style.display = "none";
     element.offsetHeight; // Trigger reflow
     element.style.display = "block";
@@ -600,7 +599,6 @@ const themeToggle = document.getElementById("theme-toggle");
             const maxHeight = pdfHeight - 2 * margin;
             let width = imgWidth;
             let height = imgHeight;
-            // Scale image to fit within max dimensions while maintaining aspect ratio
             const aspectRatio = imgWidth / imgHeight;
             if (width > maxWidth) {
             width = maxWidth;

@@ -23,12 +23,12 @@ body {
   transition: color 0.3s, background 0.3s;
   scroll-behavior: smooth;
   overscroll-behavior: none;
-  display: flex; /* Use Flexbox to structure the layout */
-  flex-direction: column; /* Stack children vertically */
-  min-height: 100vh; /* Ensure the body takes up at least the viewport height */
+  display: flex; 
+  flex-direction: column;
+  min-height: 100vh; 
 }
 body > div:first-child {
-  flex: 1 0 auto; /* Grow to fill available space, but don't shrink */
+  flex: 1 0 auto; 
 }
 h1, h2, h3 {
       font-family: 'Poppins', sans-serif;
@@ -40,16 +40,16 @@ h1, h2, h3 {
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     }
 .glass-button {
-        background: rgba(255, 255, 255, 0.7); /* More solid background for buttons */
-        backdrop-filter: blur(4px); /* Keep blur consistent with .glass */
-        border: 1px solid rgba(255, 255, 255, 0.5); /* More defined border */
-        color: var(--text-primary); /* Ensure text is readable */
+        background: rgba(255, 255, 255, 0.7); 
+        backdrop-filter: blur(4px); 
+        border: 1px solid rgba(255, 255, 255, 0.5); 
+        color: var(--text-primary); 
         transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
         }
 
-/* Dark mode for glass buttons */
+
 .dark .glass-button {
-  background: rgba(55, 65, 81, 0.7); /* More solid in dark mode */
+  background: rgba(55, 65, 81, 0.7); 
   border: 1px solid rgba(255, 255, 255, 0.4);
 }
 .tooltip {
@@ -216,10 +216,10 @@ h1, h2, h3 {
         box-shadow: none;
         width: 100%;
         margin: 0;
-        background: white !important; /* Force solid white background for PDF */
+        background: white !important;
         color: #000000 !important;
-        background: white !important; /* Force solid white background for PDF */
-        color: #000000 !important; /* Ensure text is black for PDF */
+        background: white !important; 
+        color: #000000 !important; 
         }
     }
     @media (max-width: 640px) {
