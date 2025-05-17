@@ -1,0 +1,394 @@
+:root {
+      --text-primary: #111827;
+      --text-secondary: #4b5563;
+      --bg-primary: linear-gradient(to bottom right, #eff6ff, #e0e7ff);
+      --bg-secondary: linear-gradient(to bottom right, #ffffff, #f9fafb);
+      --card-bg: linear-gradient(to bottom right, #ffffff, #f3f4f6);
+      --accent: #14b8a6;
+      --accent-dark: #0d9488;
+    }
+.dark {
+      --text-primary: #f3f4f6;
+      --text-secondary: #d1d5db;
+      --bg-primary: linear-gradient(to bottom right, #111827, #1e3a8a);
+      --bg-secondary: linear-gradient(to bottom right, #1f2937, #374151);
+      --card-bg: linear-gradient(to bottom right, #1f2937, #374151);
+      --accent: #2dd4bf;
+      --accent-dark: #14b8a6;
+    }
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  transition: color 0.3s, background 0.3s;
+  scroll-behavior: smooth;
+  overscroll-behavior: none;
+  display: flex; /* Use Flexbox to structure the layout */
+  flex-direction: column; /* Stack children vertically */
+  min-height: 100vh; /* Ensure the body takes up at least the viewport height */
+}
+body > div:first-child {
+  flex: 1 0 auto; /* Grow to fill available space, but don't shrink */
+}
+h1, h2, h3 {
+      font-family: 'Poppins', sans-serif;
+    }
+.glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+.glass-button {
+        background: rgba(255, 255, 255, 0.7); /* More solid background for buttons */
+        backdrop-filter: blur(4px); /* Keep blur consistent with .glass */
+        border: 1px solid rgba(255, 255, 255, 0.5); /* More defined border */
+        color: var(--text-primary); /* Ensure text is readable */
+        transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+        }
+
+/* Dark mode for glass buttons */
+.dark .glass-button {
+  background: rgba(55, 65, 81, 0.7); /* More solid in dark mode */
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+.tooltip {
+      visibility: hidden;
+      opacity: 0;
+      position: absolute;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      font-size: 0.75rem;
+      padding: 0.375rem 0.75rem;
+      border-radius: 0.375rem;
+      z-index: 50;
+      transition: opacity 0.3s, transform 0.3s;
+      transform: translateY(10px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      pointer-events: none;
+}
+.tooltip-top {
+      bottom: calc(100% + 0.5rem);
+      left: 50%;
+      transform: translateX(-50%) translateY(0);
+    }
+    .tooltip-right {
+      left: calc(100% + 0.5rem);
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .group:hover .tooltip {
+      visibility: visible;
+      opacity: 1;
+      transform: translateY(0) translateX(0);
+    }
+    .ripple {
+      position: relative;
+      overflow: hidden;
+    }
+    .ripple::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+    .ripple:active::after {
+      width: 300px;
+      height: 300px;
+    }
+    .spinner {
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-left-color: #ffffff;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      animation: spin 1s linear infinite;
+      display: none;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .glow-input {
+      transition: all 0.3s;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid #d1d5db;
+      height: 3rem;
+      font-size: 1rem;
+      line-height: 1.75rem;
+      padding: 0.75rem;
+    }
+    .dark .glow-input {
+      background: rgba(31, 41, 55, 0.9);
+      border: 1px solid #4b5563;
+    }
+    .glow-input:focus {
+      box-shadow: 0 0 12px var(--accent);
+      border-color: var(--accent);
+      outline: none;
+    }
+    .glow-input::placeholder {
+      color: var(--text-secondary);
+      opacity: 0.7;
+    }
+    textarea.glow-input {
+      height: 6rem;
+      resize: vertical;
+      padding: 0.75rem;
+    }
+    select {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid #d1d5db;
+      color: #111827;
+      padding: 0.75rem;
+    }
+    .dark select {
+      background: rgba(31, 41, 55, 0.9);
+      border: 1px solid #4b5563;
+      color: #f3f4f6;
+    }
+    #currency{
+        padding: 5.5px 3px;
+    }
+    .theme-button {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: rgb(0, 0, 0);
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      transition: transform 0.3s;
+    }
+    .theme-button:hover {
+      transform: scale(1.05);
+    }
+    .hidden-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s, transform 0.6s;
+    }
+    .visible-scroll {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .preview-highlight {
+      transform: scale(1.05);
+      transition: transform 0.3s;
+    }
+    .mode-toggle {
+      display: flex;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      background: var(--bg-secondary);
+    }
+    .mode-toggle input {
+      display: none;
+    }
+    .mode-toggle label {
+      flex: 1;
+      padding: 0.5rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    .mode-toggle input:checked + label {
+      background: var(--accent);
+      color: white;
+    }
+    table th, table td {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    .dark table th, .dark table td {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    @media print {
+      header, .form-section, .action-buttons, .preview-section > *:not(#preview-content), .preview-actions {
+        display: none;
+      }
+      #preview-content {
+        border: none;
+        box-shadow: none;
+        width: 100%;
+        margin: 0;
+        background: white !important; /* Force solid white background for PDF */
+        color: #000000 !important;
+        background: white !important; /* Force solid white background for PDF */
+        color: #000000 !important; /* Ensure text is black for PDF */
+        }
+    }
+    @media (max-width: 640px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+      h2 {
+        font-size: 1.25rem;
+      }
+      h3 {
+        font-size: 1rem;
+      }
+      .action-buttons, .preview-actions {
+        flex-direction: column;
+      }
+      .action-buttons button, .preview-actions button {
+        flex: 1 1 100%;
+        width: 100%;
+        margin-bottom: 0.5rem;
+      }
+      table {
+        font-size: 0.75rem;
+      }
+      th, td {
+        padding: 0.5rem;
+      }
+      .preview-section, #preview-content {
+        padding: 1rem;
+      }
+      .tooltip {
+        font-size: 0.675rem;
+        max-width: 120px;
+      }
+      .tooltip-right {
+        left: auto;
+        right: calc(100% + 0.5rem);
+      }
+      .glow-input, textarea.glow-input, select {
+        font-size: 0.875rem;
+        padding: 0.5rem;
+      }
+      .form-section, .preview-section {
+        padding: 1rem;
+      }
+      .logo-text {
+        font-size: 1.25rem;
+      }
+    }
+    @media (min-width: 640px) and (max-width: 1024px) {
+      h1 {
+        font-size: 2rem;
+      }
+      h2 {
+        font-size: 1.5rem;
+      }
+      h3 {
+        font-size: 1.125rem;
+      }
+      table {
+        font-size: 0.875rem;
+      }
+      th, td {
+        padding: 0.75rem;
+      }
+      .tooltip {
+        font-size: 0.75rem;
+      }
+      .glow-input, textarea.glow-input, select {
+        padding: 0.75rem;
+      }
+      .form-section, .preview-section {
+        padding: 1.5rem;
+      }
+    }
+    @media (min-width: 1024px) {
+      h1 {
+        font-size: 2.25rem;
+      }
+      h2 {
+        font-size: 1.75rem;
+      }
+      h3 {
+        font-size: 1.25rem;
+      }
+      table {
+        font-size: 1rem;
+      }
+      th, td {
+        padding: 1rem;
+      }
+      .glow-input, textarea.glow-input, select {
+        padding: 0.75rem;
+      }
+      .form-section, .preview-section {
+        padding: 2rem;
+      }
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+    .logo-icon {
+      animation: fadeIn 1s ease-in forwards;
+    }
+    .logo-text {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      animation: typing 1.5s steps(14) 1s forwards, blink 0.75s step-end infinite;
+      border-right: 2px solid var(--accent);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+#preview-content.pdf-rendering {
+  background: white !important; 
+  color: #000000 !important; 
+  border: none !important; 
+  box-shadow: none !important; 
+}
+
+footer {
+  flex-shrink: 0;
+  padding: 1rem 0; 
+  background: rgba(255, 255, 255, 0.3); 
+  backdrop-filter: blur(4px); 
+  border-top: 1px solid rgba(255, 255, 255, 0.2); 
+}
+
+.dark footer {
+  background: rgba(31, 41, 55, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+footer p {
+  margin: 0;
+  line-height: 1.5;
+}
+@media (max-width: 640px) {
+  footer {
+    padding: 0.75rem 0;
+  }
+  footer p {
+    font-size: 0.875rem;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1024px) {
+  footer {
+    padding: 1rem 0;
+  }
+  footer p {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  footer {
+    padding: 1.5rem 0;
+  }
+  footer p {
+    font-size: 1.125rem;
+  }
+}

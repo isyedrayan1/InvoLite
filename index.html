@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Professional Invoice Builder for creating, previewing, and exporting invoices with ease."/>
+    <meta name="keywords" content="innovoice,invoice, builder, professional, finance, SaaS"/>
+    <title>InvoLite | Invoice Builder</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  </head>
+
+  <body class="min-h-screen font-sans overflow-x-hidden">
+    <!-- Header -->
+    <header class="glass sticky top-0 z-20 p-4 sm:p-4 lg:p-4 shadow-sm">
+      <div
+        class="container mx-auto max-w-7xl flex justify-between items-center"
+      >
+        <div class="logo">
+          <i
+            data-lucide="file-text"
+            class="logo-icon w-8 h-8 mr-2 text-[var(--accent)] animate__animated"
+          ></i>
+          <span
+            class="logo-text text-xl sm:text-2xl lg:text-3xl"
+            style="
+              font-family: Saira;
+              font-optical-sizing: auto;
+              font-weight: 400;
+              font-style: normal;
+            "
+            >InvoLite</span
+          >
+        </div>
+        <div class="flex items-center space-x-4">
+          <select
+            id="currency"
+            class="glass rounded-md text-base focus:ring-2 focus:ring-[var(--accent)] focus:ring-offset-2 animate__animated animate__fadeIn"
+            aria-label="Select currency"
+          >
+            <option value="USD">$ USD</option>
+            <option value="INR">₹ INR</option>
+            <option value="EUR">€ EUR</option>
+          </select>
+          <button
+            id="theme-toggle"
+            class="theme-button ripple flex items-center justify-center"
+            aria-label="Toggle theme"
+            tabindex="0"
+          >
+            <i data-lucide="sun" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main
+      class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 xl:gap-10"
+    >
+      <!-- Form Section -->
+      <section class="form-section glass rounded-xl hidden-scroll shadow-lg">
+        <h2
+          class="text-xl font-semibold mb-6 animate__animated animate__fadeIn sm:text-2xl lg:text-3xl"
+        >
+          Create Invoice
+        </h2>
+        <form id="invoice-form">
+          <!-- Invoice Number -->
+          <div class="mb-6 group relative">
+            <label
+              class="block mb-2 text-sm font-medium flex items-center sm:text-md"
+            >
+              <i data-lucide="hash" class="w-4 h-4 mr-1"></i> Invoice Number
+            </label>
+            <input
+              type="text"
+              id="invoice-number"
+              value="20250517-001"
+              class="w-full glow-input rounded-md focus:ring-2 focus:ring-[var(--accent)]"
+              aria-label="Invoice number"
+            />
+            <span class="tooltip tooltip-top"
+              >Format: YYYYMMDD-NNN (e.g., 20250517-001)</span
+            >
+          </div>
+
+          <!-- Invoice Date -->
+          <div class="mb-6 group relative">
+            <label
+              class="block mb-2 text-sm font-medium flex items-center sm:text-md"
+            >
+              <i data-lucide="calendar" class="w-4 h-4 mr-1"></i> Invoice Date
+            </label>
+            <input
+              type="date"
+              id="invoice-date"
+              class="w-full glow-input rounded-md focus:ring-2 focus:ring-[var(--accent)]"
+              aria-label="Invoice date"
+            />
+            <span class="tooltip tooltip-top"
+              >Select the invoice issuance date</span
+            >
+          </div>
+
+          <!-- Company Info -->
+          <div class="mb-6">
+            <h3 class="text-base font-semibold mb-2 sm:text-lg lg:text-xl">
+              Your Business
+            </h3>
+            <div class="group relative mb-4">
+              <label class="block mb-2 text-sm font-medium sm:text-md"
+                >Business Name</label
+              >
+              <input
+                type="text"
+                id="business-name"
+                placeholder="Enter business name"
+                class="w-full glow-input rounded-md focus:ring-2 focus:ring-[var(--accent)]"
+                aria-label="Business name"
+              />
+              <span class="tooltip tooltip-top">Your company name</span>
+            </div>
+            <div class="group relative">
+              <label class="block mb-2 text-sm font-medium sm:text-md"
+                >Business Address</label
+              >
+              <textarea
+                id="business-address"
+                placeholder="Enter business address"
+                class="w-full glow-input rounded-md focus:ring-2 focus:ring-[var(--accent)]"
+                rows="3"
+                aria-label="Business address"
+              ></textarea>
+              <span class="tooltip tooltip-top">Your company address</span>
+            </div>
+          </div>
+
+          <!-- Client Info -->
+          <div class="mb-6">
+            <h3 class="text-base font-semibold mb-2 sm:text-lg lg:text-xl">
+              Client Info
+            </h3>
+            <div class="group relative mb-4">
+              <label class="block mb-2 text-sm font-medium sm:text-md"
+                >Client Name</label
+              >
+              <input
+                type="text"
+                id="client-name"
+                placeholder="Enter client name"
+                class="w-full glow-input rounded-md focus:ring-2 focus:ring-[var(--accent)]"
+                aria-label="Client name"
+              />
+              <span class="tooltip tooltip-top">Client's full name</span>
+            </div>
+            <div class="group relative mb-4">
+              <label class="block mb-2 text-sm font-medium sm:text-md"
+                >Client Email</label
+              >
+              <input
+                type="email"
+                id="client-email"
+                placeholder="Enter client email"
+                class="w-full glow-input rounded-md focus:ring-2 focus:ring-[var(--accent)]"
+                aria-label="Client email"
+              />
+              <span class="tooltip tooltip-top">Client's email address</span>
+            </div>
+            <div class="group relative">
+              <label class="block mb-2 text-sm font-medium sm:text-md"
+                >Client Address</label
+              >
+              <textarea
+                id="client-address"
+                placeholder="Enter client address"
+                class="w-full glow-input rounded-md focus:ring-2 focus:ring-[var(--accent)]"
+                rows="3"
+                aria-label="Client address"
+              ></textarea>
+              <span class="tooltip tooltip-top">Client's address</span>
+            </div>
+          </div>
+
+          <!-- Items Section -->
+          <div class="mb-6">
+            <h3 class="text-base font-semibold mb-2 sm:text-lg lg:text-xl">
+              Items
+            </h3>
+            <div class="mode-toggle mb-4">
+              <input
+                type="radio"
+                id="product-mode"
+                name="item-mode"
+                value="product"
+                checked
+              />
+              <label for="product-mode">Product</label>
+              <input
+                type="radio"
+                id="service-mode"
+                name="item-mode"
+                value="service"
+              />
+              <label for="service-mode">Service</label>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full border-collapse">
+                <thead>
+                  <tr class="glass">
+                    <th
+                      class="p-3 text-left text-sm sm:text-base w-2/5 item-label"
+                    >
+                      Item
+                    </th>
+                    <th
+                      class="p-3 text-left text-sm sm:text-base w-1/5 qty-label"
+                    >
+                      Qty
+                    </th>
+                    <th
+                      class="p-3 text-left text-sm sm:text-base w-1/5 price-label"
+                    >
+                      Price
+                    </th>
+                    <th class="p-3 text-left text-sm sm:text-base w-1/5">
+                      Total
+                    </th>
+                    <th class="p-3 w-10"></th>
+                  </tr>
+                </thead>
+                <tbody id="items-list"></tbody>
+              </table>
+            </div>
+            <button
+              type="button"
+              id="add-item"
+              class="mt-4 flex items-center text-[var(--accent)] hover:text-[var(--accent-dark)] ripple animate__animated animate__fadeIn"
+              aria-label="Add item"
+              tabindex="0"
+            >
+              <i data-lucide="plus-circle" class="w-5 h-5 mr-1"></i> Add Item
+            </button>
+          </div>
+
+          <!-- Tax & Discount -->
+          <div class="mb-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="group relative">
+              <label class="block mb-2 text-sm font-medium sm:text-md"
+                >Tax Rate (%)</label
+              >
+              <input
+                type="number"
+                id="tax-rate"
+                min="0"
+                step="0.1"
+                placeholder="10"
+                class="w-full glow-input rounded-md focus:ring-2 focus:ring-[var(--accent)]"
+                aria-label="Tax rate"
+              />
+              <span class="tooltip tooltip-top"
+                >Enter tax rate as percentage</span
+              >
+            </div>
+            <div class="group relative">
+              <label class="block mb-2 text-sm font-medium sm:text-md"
+                >Discount (%)</label
+              >
+              <input
+                type="number"
+                id="discount-rate"
+                min="0"
+                step="0.1"
+                placeholder="5"
+                class="w-full glow-input rounded-md focus:ring-2 focus:ring-[var(--accent)]"
+                aria-label="Discount rate"
+              />
+              <span class="tooltip tooltip-top"
+                >Enter discount as percentage</span
+              >
+            </div>
+          </div>
+
+          <!-- Totals -->
+          <div class="mb-6 glass p-6 rounded-md bg-[var(--card-bg)] shadow-lg">
+            <p class="flex justify-between text-base sm:text-lg">
+              <span>Subtotal</span>
+              <span class="font-mono text-green-500" id="subtotal">$0.00</span>
+            </p>
+            <p class="flex justify-between text-base sm:text-lg">
+              <span>Tax</span>
+              <span class="font-mono text-yellow-500" id="tax">$0.00</span>
+            </p>
+            <p class="flex justify-between text-base sm:text-lg">
+              <span>Discount</span>
+              <span class="font-mono text-red-500" id="discount">$0.00</span>
+            </p>
+            <p class="flex justify-between text-xl font-semibold sm:text-2xl">
+              <span>Grand Total</span>
+              <span class="font-mono text-[var(--accent)]" id="total"
+                >$0.00</span
+              >
+            </p>
+          </div>
+
+          <!-- Action Buttons -->
+          <div
+            class="action-buttons flex flex-wrap gap-4 sticky bottom-4 bg-[var(--card-bg)] p-6 rounded-md shadow-lg"
+          >
+            <button
+              type="button"
+              id="generate-invoice"
+              class="glass-button flex items-center glass text-black px-6 py-3 rounded-md hover:scale-105 ripple animate__animated animate__fadeIn"
+              aria-label="Generate invoice"
+              tabindex="0"
+            >
+              <i data-lucide="sparkles" class="w-5 h-5 mr-2"></i> Generate
+            </button>
+            <button
+              type="button"
+              id="reset-invoice"
+              class="glass-button flex items-center glass text-black px-6 py-3 rounded-md hover:scale-105 ripple animate__animated animate__fadeIn"
+              aria-label="Reset invoice"
+              tabindex="0"
+            >
+              <i data-lucide="rotate-ccw" class="w-5 h-5 mr-2"></i> Reset
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Preview Section -->
+      <section class="preview-section glass rounded-xl hidden-scroll shadow-lg">
+        <h2
+          class="text-xl font-semibold mb-6 animate__animated animate__zoomIn sm:text-2xl lg:text-3xl"
+        >
+          Invoice Preview
+        </h2>
+        <div
+          id="preview-content"
+          class="bg-[var(--card-bg)] border border-[var(--accent)]/20 rounded-md p-6 sm:p-8 lg:p-10 max-w-4xl mx-auto shadow-lg"
+        >
+          <div class="flex justify-between mb-6 flex-col sm:flex-row">
+            <div class="mb-4 sm:mb-0">
+              <div class="flex items-center mb-2">
+                <i data-lucide="file-text" class="w-6 h-6 mr-2"></i>
+                <h3 class="text-xl font-bold sm:text-2xl">
+                  Invoice #<span id="preview-invoice-number">20250517-001</span>
+                </h3>
+              </div>
+              <p class="text-base sm:text-lg">
+                Date: <span id="preview-invoice-date">N/A</span>
+              </p>
+            </div>
+            <div class="text-left sm:text-right group relative">
+              <p
+                id="preview-business-name"
+                class="font-semibold text-xl sm:text-2xl"
+              >
+                Your Business
+              </p>
+              <p
+                id="preview-business-address"
+                class="text-base whitespace-pre-line sm:text-lg"
+              >
+                N/A
+              </p>
+              <span class="tooltip tooltip-right">Business details</span>
+            </div>
+          </div>
+          <div class="mb-6 group relative">
+            <p class="font-semibold text-base sm:text-lg">Bill To:</p>
+            <p id="preview-client-name" class="text-xl sm:text-2xl">N/A</p>
+            <p id="preview-client-email" class="text-base sm:text-lg">N/A</p>
+            <p
+              id="preview-client-address"
+              class="text-base whitespace-pre-line sm:text-lg"
+            >
+              N/A
+            </p>
+            <span class="tooltip tooltip-top">Client details</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full border-collapse mb-6">
+              <thead>
+                <tr class="glass">
+                  <th class="p-3 text-left text-base item-label">Item</th>
+                  <th class="p-3 text-left text-base qty-label">Qty</th>
+                  <th class="p-3 text-left text-base price-label">Price</th>
+                  <th class="p-3 text-left text-base">Total</th>
+                </tr>
+              </thead>
+              <tbody id="preview-items"></tbody>
+            </table>
+          </div>
+          <div class="text-right group relative">
+            <p class="flex justify-between text-base sm:text-lg">
+              <span>Subtotal</span>
+              <span class="font-mono text-green-500" id="preview-subtotal"
+                >$0.00</span
+              >
+            </p>
+            <p class="flex justify-between text-base sm:text-lg">
+              <span>Tax</span>
+              <span class="font-mono text-yellow-500" id="preview-tax"
+                >$0.00</span
+              >
+            </p>
+            <p class="flex justify-between text-base sm:text-lg">
+              <span>Discount</span>
+              <span class="font-mono text-red-500" id="preview-discount"
+                >$0.00</span
+              >
+            </p>
+            <p class="flex justify-between text-xl font-semibold sm:text-2xl">
+              <span>Grand Total</span>
+              <span class="font-mono text-[var(--accent)]" id="preview-total"
+                >$0.00</span
+              >
+            </p>
+            <span class="tooltip tooltip-right">Invoice totals</span>
+          </div>
+        </div>
+        <div class="preview-actions flex flex-wrap gap-4 mt-6 justify-center">
+          <button
+            type="button"
+            id="preview-save"
+            class="glass-button flex items-center glass text-black px-6 py-3 rounded-md hover:scale-105 ripple animate__animated animate__fadeIn"
+            aria-label="Save invoice"
+            tabindex="0"
+          >
+            <i data-lucide="save" class="w-5 h-5 mr-2"></i> Save
+            <span class="spinner ml-2" id="preview-save-spinner"></span>
+          </button>
+          <button
+            type="button"
+            id="preview-pdf"
+            class="glass-button flex items-center glass text-black px-6 py-3 rounded-md hover:scale-105 ripple animate__animated animate__fadeIn"
+            aria-label="Export preview as PDF"
+            tabindex="0"
+          >
+            <i data-lucide="download" class="w-5 h-5 mr-2"></i> Export PDF
+            <span class="spinner ml-2" id="preview-pdf-spinner"></span>
+          </button>
+          <button
+            type="button"
+            id="preview-image"
+            class="glass-button flex items-center glass text-black px-6 py-3 rounded-md hover:scale-105 ripple animate__animated animate__fadeIn"
+            aria-label="Share preview as image"
+            tabindex="0"
+          >
+            <i data-lucide="image" class="w-5 h-5 mr-2"></i> Share Image
+            <span class="spinner ml-2" id="preview-image-spinner"></span>
+          </button>
+        </div>
+      </section>
+
+      
+    </main>
+    <!-- Footer -->
+      <footer class="glass w-full p-4 shadow-sm">
+        <div
+          class="container mx-auto max-w-7xl flex flex-col items-center justify-center text-center"
+        >
+          <p class="text-sm sm:text-base text-[var(--text-secondary)]">
+            &copy; 2025 All Rights Reserved. Made by
+            <a
+              href="https://syedrayan.netlify.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-[var(--accent)] hover:text-[var(--accent-dark)] transition-colors"
+            >
+              Syed Rayan
+            </a>
+          </p>
+        </div>
+      </footer>
+<script src="script.js"></script>
+</body>
+</html>
